@@ -1,0 +1,29 @@
+{
+    "eslint.enable": true,
+    "eslint.validate": [
+      "javascript",
+      "javascriptreact",
+      {
+        "language": "typescript",
+        "autoFix": true
+      },
+      {
+        "language": "typescriptreact",
+        "autoFix": true
+      },
+      {
+        "language": "html",
+        "autoFix": true
+      }
+    ],
+    "cSpell.words": [
+      "Aweme",
+      "Captcha",
+      "Unmount",
+      "cooldown",
+      "helpdesk",
+      "minireset",
+      "mobx"
+    ]
+  }
+  
