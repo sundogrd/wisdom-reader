@@ -1,32 +1,51 @@
 import * as React from 'react'
 import * as ReactUse from 'react-use'
-import UserAlert from '../user-alert'
-import { CloseIcon } from '../icon'
 import Parser from 'rss-parser'
 import classnames from 'classnames'
+import moment from 'moment'
+import { observer } from 'mobx-react'
+import { CloseIcon } from '../icon'
 import { PROXY_PATH, FAVICON_PROVIDER } from '../../consts'
-import { useDb } from '../../contexts/db'
+import useMobxStores from '../../hooks/use-mobx-stores'
+import { TStore } from '../../store'
 import Feed from './feed'
 
 import "./index.scss"
 
 type FeedsProps = {
-    feeds: any[];
 }
-const Feeds: React.FunctionComponent<FeedsProps> = ({ feeds }) => {
+const Feeds: React.FunctionComponent<FeedsProps> = observer(({}) => {
     const [loading, toggleLoading] = ReactUse.useToggle(true)
-    const [loaded, setLoaded] = React.useState(0)
     const [rss, setRss] = React.useState("")
-    const { dbFeeds } = useDb()
-    if (!dbFeeds) {
-        throw new Error("db_feeds not init")
+
+    const { readerStore, appStore } = useMobxStores<TStore>()
+
+    const handleAppForeground = () => {
+        //Trigger automatic update on app foreground
+        //Update only if lastupdate < 1 minute
+        //User can still force update with pull-to-refresh
+        if (moment(readerStore.feedsLastUpdate).add(1, 'minute') <= moment()) {
+            console.log("start refreshFeeds")
+            readerStore.refreshFeeds()
+        }
     }
 
-    const [hide, toggleHide] = ReactUse.useToggle(true)
+    // 监听visible时刷新
+    ReactUse.useMount(() => {
+        document.addEventListener("visibilitychange", handleAppForeground);
+    })
 
-    const addFeed = async (link: string, fromOPML = false): Promise<void> => {
-        const rss = link;
+    ReactUse.useUnmount(() => {
+        document.removeEventListener("visibilitychange", handleAppForeground)
+    })
 
+    ReactUse.useMount(async () => {
+        toggleLoading(true)
+        await readerStore.refreshFeeds()
+        toggleLoading(false)
+    })
+
+    const handleAddFeedClick = async () => {
         // Test feed validity
         if (rss === "") {
             alert("Please add rss feed link first.");
@@ -42,11 +61,9 @@ const Feeds: React.FunctionComponent<FeedsProps> = ({ feeds }) => {
         toggleLoading(true)
 
         const feed = {
-            _id:     rss,
             uri:     rss,
             title:   rss,
             icon:    '',
-            created: (fromOPML) ? Math.floor(Date.now() / 100) : 0
         };
 
         //Trying to fetch xml feed
@@ -60,7 +77,7 @@ const Feeds: React.FunctionComponent<FeedsProps> = ({ feeds }) => {
                 feed.title = info.title;
             }
 
-            //Use google as favicon provider (o_O)
+            //Use google as favicon provider :)
             if (window.fetch) {
                 const base = info.link || rss;
                 const icon = await fetch(`${PROXY_PATH}${FAVICON_PROVIDER}${base}`);
@@ -82,7 +99,11 @@ const Feeds: React.FunctionComponent<FeedsProps> = ({ feeds }) => {
         }
 
         try {
-            await dbFeeds.put(feed);
+            await readerStore.createFeed({
+                uri: feed.uri,
+                title: feed.title,
+                icon: feed.icon,
+            })
             toggleLoading(false)
             setRss('')
 
@@ -97,50 +118,12 @@ const Feeds: React.FunctionComponent<FeedsProps> = ({ feeds }) => {
         }
     }
 
-    const onFeedLoad = () => {
-        // Counting feed load
-        setLoaded(loaded + 1)
-        if (loaded === feeds.length) {
-            toggleLoading()
-        }
-    }
 
     const handleFeedsToggleClick = () => {
-        toggleHide()
+        appStore.toggleHideFeeds()
     }
     const handleFeedsInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setRss(e.target.value)
-    }
-    const handleOpmlFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        if (!e.target.files || e.target.files.length === 0) return;
-
-        const fileReader = new FileReader();
-        fileReader.onloadend = (): void => {
-            if(fileReader.result === "" || fileReader.result === null) return;
-            if (typeof fileReader.result !== "string") {
-                return
-            }
-            if(fileReader.result.startsWith('<?xml') === false) {
-                alert("Please upload a valid opml file.");
-                return;
-            }
-
-            //1- Extract all xmlUrl
-            const urls = fileReader.result.match(/xmlUrl="(.*?)"/g);
-            if (!urls) {
-                throw new Error("fileReader result invalid")
-            }
-
-            //2- Add feed
-            urls.forEach((feed, i) => {
-                feed = feed.replace('xmlUrl="', '').slice(0, -1);
-                setTimeout(() => {
-                    addFeed(feed, true);
-                }, i * 100);
-            });
-        }
-
-        fileReader.readAsText(e.target.files[0]);
     }
     return (
         <div className="app-feeds-container">
@@ -153,7 +136,7 @@ const Feeds: React.FunctionComponent<FeedsProps> = ({ feeds }) => {
             {/* { (feeds.length === 0 && !loading) && <UserAlert triggerOK={this.addDefaultFeed} /> } */}
 
             { /* Manage feeds */}
-            <div className={classnames("App-Feeds", hide)}>
+            <div className={classnames("App-Feeds", { 'hide': appStore.hideFeeds })}>
                 <h1>
                     <img alt="pager" src={process.env.PUBLIC_URL + '/favicon.ico'} />
                     <button className="App-Feeds-Toggle" onClick={handleFeedsToggleClick}>
@@ -167,20 +150,7 @@ const Feeds: React.FunctionComponent<FeedsProps> = ({ feeds }) => {
                     type="text"
                     value={rss}
                     onChange={handleFeedsInputChange}
-                    placeholder="| Add rss feed link here.."
-                />
-
-                { /* OPML */ }
-                <label
-                    className="App-Feeds-Input-OPML"
-                    htmlFor="opml-file-trigger">
-						OPML
-                </label>
-                <input
-                    id="opml-file-trigger"
-                    type="file"
-                    onChange={handleOpmlFileChange}
-                    style={{display:'none'}}
+                    placeholder="Add rss feed link here.."
                 />
 
                 {loading ? (
@@ -192,22 +162,21 @@ const Feeds: React.FunctionComponent<FeedsProps> = ({ feeds }) => {
                 ) : (
                     <button
                         className="App-Feeds-Add"
-                        onClick={() => addFeed(rss)}>
+                        onClick={handleAddFeedClick}>
 							ADD (+)
                     </button>
                 )}
 
                 <ul>
-                    {feeds.map((feed) => (
+                    {readerStore.feeds.map((feed) => (
                         <Feed
-                            key={feed._id}
+                            key={feed.id}
                             feed={feed}
-                            onLoaded={onFeedLoad}
                         />
                     ))}
                 </ul>
             </div>
         </div>
     )
-}
+})
 export default Feeds

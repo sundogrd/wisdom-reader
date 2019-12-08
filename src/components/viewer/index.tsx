@@ -1,74 +1,41 @@
 import * as React from 'react'
 import * as ReactUse from 'react-use'
 import classnames from 'classnames'
-import { OpenInNewIcon, StarFullIcon, StarIcon, CloseIcon } from '../icon'
 import moment from 'moment'
+import { observer } from 'mobx-react'
+import { OpenInNewIcon, StarFullIcon, StarIcon, CloseIcon } from '../icon'
+
+import useMobxStores from '../../hooks/use-mobx-stores'
+import { TStore } from '../../store'
 
 import "./index.scss"
-import { useDb } from '../../contexts/db'
 
 type ViewerProps = {
-    viewer: {
-        id:    string;
-        rev:   string;
-        icon:     string;
-        title:   string;
-        date:     string;
-        content:  string;
-        link:     string;
-        favorite: boolean;
-    } | null;
-    onBack: () => void;
 }
-const Viewer: React.FunctionComponent<ViewerProps> = ({ viewer, onBack }) => {
+const Viewer: React.FunctionComponent<ViewerProps> = observer(({}) => {
     // _id:      null,
     // _rev:     null,
-    const [active, toggleActive] = ReactUse.useToggle(false) 
-    const { dbFeedsItems } = useDb()
-    if (!dbFeedsItems) {
-        throw new Error("feeds_items not init")
-    }
-
-    // 如果没viewer则active为false
-    React.useEffect(() => {
-        if (!viewer) {
-            if (active) {
-                toggleActive(false)
-            }
-        } else {
-            if (!active) {
-                toggleActive(true)
-            }
-        }
-    }, [viewer])
+    const { readerStore } = useMobxStores<TStore>()
 
     const handleBack = (): void => {
-        if (active) {
-            toggleActive(false)
-            window.history.replaceState(null, "wisdom reader", ' ');
-            onBack()
-        }  
+        window.history.replaceState(null, "wisdom reader", ' '); 
     }
 
     const handleAddFavoriteClick = async (): Promise<void> => {
         try {
-            if (!viewer) {
+            if (!readerStore.readingItem) {
                 throw new Error("viewer is not ready")
             }
-            //Toggle favorite
-            const item = await dbFeedsItems.get(viewer.id);
-            item.favorite = !viewer.favorite;
 
-            await dbFeedsItems.put(item);
-            this.setState({ favorite: item.favorite });
+            await readerStore.toggleFavoriteItem(readerStore.readingItem.id);
+            
         } catch (e) {
-            console.warn(`Unable to toggle favorite item: ${this.state._id} reason: ${e}`);
+            console.warn(`Unable to toggle favorite item: ${readerStore.readingItem && readerStore.readingItem.id} reason: ${e}`);
         }
     }
 
     const handleCloseClick = (): void => {
-        toggleActive(false)
-        setContent(null)
+        readerStore.exitReading()
         window.history.replaceState(null, "wisdom reader", ' ');
 
         //Desktop: Remove fixed width (css: resize)
@@ -84,6 +51,14 @@ const Viewer: React.FunctionComponent<ViewerProps> = ({ viewer, onBack }) => {
         window.removeEventListener("popstate", handleBack);
     })
 
+    if (!readerStore.readingItem) {
+        return (
+            <div>
+                no viewer
+                <button title="Add to favorite" onClick={handleAddFavoriteClick}></button>
+            </div>
+        )
+    }
     return (
         <div className={classnames('App-Viewer', {active: 'active'})}>
             <div className="App-Viewer-Options">
@@ -91,23 +66,23 @@ const Viewer: React.FunctionComponent<ViewerProps> = ({ viewer, onBack }) => {
                 <a
                     rel="noopener noreferrer"
                     target="_blank"
-                    href={link || ""}
+                    href={readerStore.readingItem.link}
                     onClick={handleCloseClick}>
                     <button title="Open to new tab"><OpenInNewIcon /></button>
                 </a>
                 <button title="Add to favorite" onClick={handleAddFavoriteClick}>
-                    {favorite ? <StarFullIcon /> : <StarIcon /> }
+                    {readerStore.readingItem.favorite ? <StarFullIcon /> : <StarIcon /> }
                 </button>
             </div>
 
             <div className="App-Viewer-Title">
-                <h1><img alt="icon" src={icon || "#"} /> {title}</h1>
-                <p>{date ? moment.unix(date).format("LLLL") : "---"}</p>
+                <h1><img alt="icon" src={readerStore.readingItem.icon} /> {readerStore.readingItem.title}</h1>
+                <p>{moment(readerStore.readingItem.date).format("LLLL")}</p>
             </div>
 
             { /* TODO: find safer way.. */}
-            <div className="App-Viewer-Content" dangerouslySetInnerHTML={{ __html: content || "" }} />
+            <div className="App-Viewer-Content" dangerouslySetInnerHTML={{ __html: readerStore.readingItem.content }} />
         </div>
     )
-}
+})
 export default Viewer

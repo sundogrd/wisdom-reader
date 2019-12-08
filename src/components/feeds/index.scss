@@ -59,8 +59,8 @@
 
 		.App-Feeds-Input {
 			width:100%;
+			padding: 0 10px;
 			height:40px;
-			text-indent:60px;
 			background-color: var(--white);
 			box-sizing: border-box;
 			border:0;
@@ -69,22 +69,6 @@
 			&::placeholder {
 				color:var(--text_secondary);
 			}
-		}
-
-		.App-Feeds-Input-OPML {
-			position: relative;
-			left:10px;
-			top:-25px;
-
-			cursor:pointer;
-			width:38px;
-			padding:3px;
-			font-size:11px;
-			font-weight:bold;
-			text-align: center;
-			border-radius:5px;
-			background-color: var(--red);
-			color: white;
 		}
 
 		ul {

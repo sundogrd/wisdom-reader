@@ -7,8 +7,11 @@ module.exports = {
         'prettier',
         'plugin:@typescript-eslint/recommended',
         'plugin:react/recommended',
+        'plugin:import/errors',
+        'plugin:import/warnings',
+        'plugin:import/typescript'
     ],
-    plugins: ['@typescript-eslint'],
+    plugins: ['@typescript-eslint', 'import'],
     rules: {
         'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
         'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
@@ -17,6 +20,10 @@ module.exports = {
         '@typescript-eslint/camelcase': 'off',
         "@typescript-eslint/interface-name-prefix": ["error", { "prefixWithI": "never" }],
         '@typescript-eslint/indent': ["error", 4],
+        'import/order': ["error", {
+            "groups": ["builtin",  "external", "internal", "parent", "sibling", "index"],
+        }],
+        'import/newline-after-import': ["error", { "count": 1 }]
     },
     parserOptions: {
         parser: '@typescript-eslint/parser',
