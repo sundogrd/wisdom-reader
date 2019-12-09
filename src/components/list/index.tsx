@@ -78,7 +78,7 @@ const List: React.FunctionComponent<ListProps> = observer(({ }) => {
         try {
             readerStore.markItemsAsRead([item.id])
         } catch(e) {
-            console.warn(`Unable to mark as read item: ${item.id} reason: ${e}`);
+            // console.warn(`Unable to mark as read item: ${item.id} reason: ${e}`);
         }
     }
 

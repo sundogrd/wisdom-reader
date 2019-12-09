@@ -30,7 +30,7 @@ const Viewer: React.FunctionComponent<ViewerProps> = observer(({}) => {
             await readerStore.toggleFavoriteItem(readerStore.readingItem.id);
             
         } catch (e) {
-            console.warn(`Unable to toggle favorite item: ${readerStore.readingItem && readerStore.readingItem.id} reason: ${e}`);
+            // console.warn(`Unable to toggle favorite item: ${readerStore.readingItem && readerStore.readingItem.id} reason: ${e}`);
         }
     }
 

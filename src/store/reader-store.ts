@@ -227,7 +227,7 @@ const readerStore = () => ({
                 //Add only new items since feed was imported
                 if (ts >= moment(feedDoc.createdAt).add(-7, "day")) {
                     if (!item.link) {
-                        console.error("item no link", item)
+                        // console.error("item no link", item)
                         return
                     }
                     // 去重
@@ -246,7 +246,7 @@ const readerStore = () => ({
                             favorite: false,
                         });
                     } else {
-                        console.debug("redundant item")
+                        // console.debug("redundant item")
                     }
                 }
             });
@@ -263,7 +263,7 @@ const readerStore = () => ({
             const newItems = findRes.docs.map((doc) => packItem(doc))
             this.items = [...newItems, ...this.items]
         } catch(e) {
-            console.error(`Unable to fetch feed: ${uri} reason: ${e}`);
+            // console.error(`Unable to fetch feed: ${uri} reason: ${e}`);
         }
     }
 });

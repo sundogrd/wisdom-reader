@@ -25,7 +25,6 @@ const Feeds: React.FunctionComponent<FeedsProps> = observer(({}) => {
         //Update only if lastupdate < 1 minute
         //User can still force update with pull-to-refresh
         if (moment(readerStore.feedsLastUpdate).add(1, 'minute') <= moment()) {
-            console.log("start refreshFeeds")
             readerStore.refreshFeeds()
         }
     }
@@ -94,7 +93,7 @@ const Feeds: React.FunctionComponent<FeedsProps> = observer(({}) => {
             }
         } catch (e) {
             toggleLoading(false)
-            console.error(`Unable to add feed: ${rss} reason: ${e}`);
+            // console.error(`Unable to add feed: ${rss} reason: ${e}`);
             return;
         }
 
@@ -114,7 +113,7 @@ const Feeds: React.FunctionComponent<FeedsProps> = observer(({}) => {
             // });
         } catch(e) {
             toggleLoading(false)
-            console.error(`Unable to add feed: ${rss} reason: ${e}`);
+            // console.error(`Unable to add feed: ${rss} reason: ${e}`);
         }
     }
 
