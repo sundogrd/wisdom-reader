@@ -1,4 +1,4 @@
-name: Node CI
+name: Node CI/CD deploy to Tencent Cloud
 
 on: [push]
 
@@ -13,10 +13,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+    - name: Install
+      uses: docker://node:alpine
       with:
-        node-version: ${{ matrix.node-version }}
+        args: npm install
     - name: npm install, build, and test
       run: |
         npm ci
