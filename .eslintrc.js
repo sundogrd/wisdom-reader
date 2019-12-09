@@ -13,7 +13,7 @@ module.exports = {
     ],
     plugins: ['@typescript-eslint', 'import'],
     rules: {
-        'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+        'no-console': 'off',
         'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
         camelcase: 'off',
         "react/prop-types": 'off',
