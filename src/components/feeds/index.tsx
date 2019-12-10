@@ -127,7 +127,7 @@ const Feeds: React.FunctionComponent<FeedsProps> = observer(({}) => {
     return (
         <div className="app-feeds-container">
             { /* Loader */}
-            <div className="App-Feeds-Loader">
+            <div className="app-feeds-loader">
                 { loading && <div className="loader"></div> }
             </div>
 
@@ -135,17 +135,17 @@ const Feeds: React.FunctionComponent<FeedsProps> = observer(({}) => {
             {/* { (feeds.length === 0 && !loading) && <UserAlert triggerOK={this.addDefaultFeed} /> } */}
 
             { /* Manage feeds */}
-            <div className={classnames("App-Feeds", { 'hide': appStore.hideFeeds })}>
+            <div className={classnames("app-feeds", { 'hide': appStore.hideFeeds })}>
                 <h1>
                     <img alt="wisdom-reader" src={process.env.PUBLIC_URL + '/favicon.ico'} />
-                    <button className="App-Feeds-Toggle" onClick={handleFeedsToggleClick}>
+                    <button className="app-feeds-toggle" onClick={handleFeedsToggleClick}>
                         <CloseIcon />
                     </button>
                 </h1>
 
                 { /* Http link */ }
                 <input
-                    className="App-Feeds-Input"
+                    className="app-feeds-input"
                     type="text"
                     value={rss}
                     onChange={handleFeedsInputChange}
@@ -155,12 +155,12 @@ const Feeds: React.FunctionComponent<FeedsProps> = observer(({}) => {
                 {loading ? (
                     <button
                         disabled
-                        className="App-Feeds-Add">
+                        className="app-feeds-add">
 							LOADING...
                     </button>
                 ) : (
                     <button
-                        className="App-Feeds-Add"
+                        className="app-feeds-add"
                         onClick={handleAddFeedClick}>
 							ADD (+)
                     </button>

@@ -1,4 +1,4 @@
-.App-Viewer {
+.app-viewer {
 	display:none;
 	position: absolute;
 	flex-grow: 3;
@@ -15,7 +15,7 @@
 		height:100%;
 	}
 
-	.App-Viewer-Options {
+	.app-viewer-options {
 		display: flex;
 		align-items: center;
 		position:fixed;
@@ -35,7 +35,7 @@
 
 			svg { fill: var(--red); }
 
-			&.App-Viewer-Options-Close {
+			&.app-viewer-options-close {
 				width:100px;
 				background-color: var(--text_secondary);
 				color: var(--white);
@@ -46,12 +46,12 @@
 		}
 	}
 
-	.App-Viewer-Title {
+	.app-viewer-title {
 		margin-top: 50px;
 		padding: 0px 15px 0px 15px;
 	}
 
-	.App-Viewer-Content {
+	.app-viewer-content {
 		padding: 0px 15px 15px 15px;
 
 		img, iframe, div {

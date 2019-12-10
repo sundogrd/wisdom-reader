@@ -7,3 +7,5 @@
 3. Server Support ?
 
 4. Optimize the CRA(Create React APP) eject result(Source Code Optimization).
+
+5. I18n

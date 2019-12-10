@@ -16,6 +16,7 @@ const Viewer: React.FunctionComponent<ViewerProps> = observer(({}) => {
     // _id:      null,
     // _rev:     null,
     const { readerStore } = useMobxStores<TStore>()
+    ReactUse.useLogger("viwer", readerStore.readingItem)
 
     const handleBack = (): void => {
         window.history.replaceState(null, "wisdom reader", ' '); 
@@ -30,7 +31,7 @@ const Viewer: React.FunctionComponent<ViewerProps> = observer(({}) => {
             await readerStore.toggleFavoriteItem(readerStore.readingItem.id);
             
         } catch (e) {
-            // console.warn(`Unable to toggle favorite item: ${readerStore.readingItem && readerStore.readingItem.id} reason: ${e}`);
+            window.console.warn(`Unable to toggle favorite item: ${readerStore.readingItem && readerStore.readingItem.id} reason: ${e}`);
         }
     }
 
@@ -40,7 +41,7 @@ const Viewer: React.FunctionComponent<ViewerProps> = observer(({}) => {
 
         //Desktop: Remove fixed width (css: resize)
         // TODO: use reactive way
-        (document.getElementsByClassName('App-List')[0] as any).style = null;
+        (document.getElementsByClassName('app-list')[0] as any).style = null;
     }
 
     ReactUse.useMount(() => {
@@ -53,16 +54,16 @@ const Viewer: React.FunctionComponent<ViewerProps> = observer(({}) => {
 
     if (!readerStore.readingItem) {
         return (
-            <div>
+            <div className="app-viewer">
                 no viewer
                 <button title="Add to favorite" onClick={handleAddFavoriteClick}></button>
             </div>
         )
     }
     return (
-        <div className={classnames('App-Viewer', {active: 'active'})}>
-            <div className="App-Viewer-Options">
-                <button className="App-Viewer-Options-Close" onClick={handleCloseClick}><CloseIcon /></button>
+        <div className={classnames('app-viewer', {active: 'active'})}>
+            <div className="app-viewer-options">
+                <button className="app-viewer-options-close" onClick={handleCloseClick}><CloseIcon /></button>
                 <a
                     rel="noopener noreferrer"
                     target="_blank"
@@ -75,13 +76,13 @@ const Viewer: React.FunctionComponent<ViewerProps> = observer(({}) => {
                 </button>
             </div>
 
-            <div className="App-Viewer-Title">
+            <div className="app-viewer-title">
                 <h1><img alt="icon" src={readerStore.readingItem.icon} /> {readerStore.readingItem.title}</h1>
                 <p>{moment(readerStore.readingItem.date).format("LLLL")}</p>
             </div>
 
             { /* TODO: find safer way.. */}
-            <div className="App-Viewer-Content" dangerouslySetInnerHTML={{ __html: readerStore.readingItem.content }} />
+            <div className="app-viewer-content" dangerouslySetInnerHTML={{ __html: readerStore.readingItem.content }} />
         </div>
     )
 })

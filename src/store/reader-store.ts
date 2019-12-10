@@ -157,7 +157,7 @@ const readerStore = () => ({
         if (putRes.ok) {
             this.favoriteItems.push(packItem(itemDoc))
             if (this.readingItem && this.readingItem.id === itemId) {
-                this.readingItem.favorite = !itemDoc.favorite
+                this.readingItem.favorite = itemDoc.favorite
             }
         }
     },

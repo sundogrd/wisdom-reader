@@ -40,13 +40,13 @@ const List: React.FunctionComponent<ListProps> = observer(({ }) => {
     // }
 
     const emptyView = (
-        <div className="App-List-Empty">
+        <div className="app-list-empty">
             <h1>(o_O)</h1>
             <p>There is nothing to read right now..</p>
         </div>
     );
     // const markAsReadButton = (
-    //     <div className="App-List-Mark-As-Read-Button" onClick={handleMarkAllButtonClick}>
+    //     <div className="app-list-mark-as-read-button" onClick={handleMarkAllButtonClick}>
     //         <p>MARK ALL AS READ</p>
     //     </div>
     // );
@@ -93,14 +93,14 @@ const List: React.FunctionComponent<ListProps> = observer(({ }) => {
     // const unreadItems  = this.state.items.filter(item => item.unread === true);
 
     const renderLoadingView = () => (
-        <div className="App-List-Empty">
+        <div className="app-list-empty">
             <p>loading...</p>
         </div>
     );
     return (
-        <div className="App-List">
-            <div className="App-List-Options">
-                <button onClick={handleShowFeedsClick} className="App-List-Options-Open-Feeds">Feeds</button>
+        <div className="app-list">
+            <div className="app-list-options">
+                <button onClick={handleShowFeedsClick} className="app-list-options-open-feeds">Feeds</button>
                 <button onClick={handleFavoriteSwitchClick} title="Show only favorites" className={classnames({'active': favoriteSwitch})}>
                     <StarFullIcon />
                 </button>

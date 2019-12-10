@@ -1,4 +1,4 @@
-.App-List {
+.app-list {
 	flex-grow: 2;
 	width:100%;
 	overflow: auto;
@@ -11,7 +11,7 @@
 		flex-grow: inherit;
 	}
 
-	.App-List-Options {
+	.app-list-options {
 		display: flex;
 		align-items: center;
 		position:fixed;
@@ -37,7 +37,7 @@
 				svg { fill: var(--white); }
 			}
 
-			&.App-List-Options-Open-Feeds {
+			&.app-list-options-open-feeds {
 				width:100px;
 				background-color: var(--text_secondary);
 				color: var(--white);
@@ -49,13 +49,13 @@
 		}
 	}
 
-	.App-List-Empty {
+	.app-list-Empty {
 		display:flex;
 		flex-direction: column;
 		align-items: center;
 	}
 
-	.App-List-Mark-As-Read-Button {
+	.app-list-Mark-As-Read-Button {
 		display:flex;
 		justify-content: center;
 
@@ -85,81 +85,6 @@
 			outline: 0;
 			user-select: none;
 		}
-
-		// //Default: compact view
-		// &.compact li {
-		// 	display:grid;
-		// 	grid-template-columns: 10% 10% 30% 50%;
-		// 	grid-template-rows: 50px;
-		// 	align-items: center;
-
-		// 	list-style-type: none;
-		// 	border-bottom:1px solid var(--bg);
-		// 	background-color: var(--bg);
-		// 	color:var(--text_primary);
-
-		// 	&.unread {
-		// 		font-weight: bold;
-		// 		background-color: var(--white);
-		// 		border-left:3px solid var(--red);
-		// 		@media (min-width: 768px) {
-		// 			border-left:0px;
-		// 		}
-		// 	}
-
-		// 	&:hover {
-		// 		cursor:pointer;
-		// 		background-color: var(--bg);
-		// 	}
-
-		// 	div {
-		// 		max-height: 40px;
-		// 		overflow: hidden;
-
-		// 		&.i { //icon
-		// 			grid-column: 1;
-		// 			grid-row: 1;
-
-		// 			text-align: center;
-
-		// 			img {
-		// 				height:16px;
-		// 				width:16px;
-		// 				margin-top:2px;
-		// 			}
-		// 		}
-
-		// 		&.ts { //time
-		// 			display:none;
-		// 		}
-
-		// 		&.t { //title
-		// 			grid-column: 2 / span 4;
-		// 			grid-row: 1;
-		// 		}
-
-		// 		&.d { //description
-		// 			display:none;
-		// 		}
-
-		// 		@media (min-width: 768px) {
-		// 			&.ts {
-		// 				grid-column: 2;
-		// 				grid-row: 1;
-		// 				display:block;
-		// 			}
-		// 			&.t {
-		// 				grid-column: 3;
-		// 				grid-row: 1;
-		// 			}
-		// 			&.d  {
-		// 				grid-column: 4;
-		// 				grid-row: 1;
-		// 				display:block;
-		// 			}
-		// 		}
-		// 	}
-		// }
 
 		//large view
 		& li {

@@ -1,5 +1,5 @@
 .app-feeds-container {
-    .App-Feeds {
+    .app-feeds {
 		position:absolute;
 		display:flex;
 		flex-grow: 1;
@@ -21,7 +21,7 @@
 			max-width:250px;
 		}
 
-		.App-Feeds-Toggle {
+		.app-feeds-toggle {
 			width:100px;
 			height:50px;
 			position: absolute;
@@ -47,7 +47,7 @@
 			}
 		}
 
-		.App-Feeds-Add {
+		.app-feeds-add {
 			width:100%;
 			height:40px;
 			font-weight: bold;
@@ -57,7 +57,7 @@
 			cursor:pointer;
 		}
 
-		.App-Feeds-Input {
+		.app-feeds-input {
 			width:100%;
 			padding: 0 10px;
 			height:40px;
@@ -124,7 +124,7 @@
 		}
 	}
 
-	.App-Feeds-Loader {
+	.app-feeds-loader {
 		.loader {
 			position: absolute;
 			z-index:999;
