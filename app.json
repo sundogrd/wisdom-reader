@@ -1,11 +1,11 @@
 {
-	"name": "Pager",
+	"name": "Wisdom Reader",
 	"description": "Minimalist serverless RSS reader",
-	"repository": "https://github.com/flysteur-dev/pager",
-	"logo": "https://raw.githubusercontent.com/flysteur-dev/pager/master/public/favicon.png",
+	"repository": "https://github.com/sundogrd/wisdom-reader",
+	"logo": "https://raw.githubusercontent.com/sundogrd/wisdom-reader/master/public/favicon.png",
 	"stack": "container",
 	"keywords": [
-		"pager",
+		"wisdom-reader",
 		"rss-reader",
 		"react",
 		"pwa"

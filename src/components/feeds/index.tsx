@@ -137,7 +137,7 @@ const Feeds: React.FunctionComponent<FeedsProps> = observer(({}) => {
             { /* Manage feeds */}
             <div className={classnames("App-Feeds", { 'hide': appStore.hideFeeds })}>
                 <h1>
-                    <img alt="pager" src={process.env.PUBLIC_URL + '/favicon.ico'} />
+                    <img alt="wisdom-reader" src={process.env.PUBLIC_URL + '/favicon.ico'} />
                     <button className="App-Feeds-Toggle" onClick={handleFeedsToggleClick}>
                         <CloseIcon />
                     </button>
